@@ -1,0 +1,22 @@
+{
+    "name": "e621-sdk",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "dev": "tsc --watch",
+        "build": "tsc",
+        "start": "node test.js"
+    },
+    "types": "src/index.ts",
+    "main": "dist/index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^24.1.0",
+        "typescript": "^5.9.2"
+    },
+    "dependencies": {
+        "axios": "^1.11.0"
+    }
+}
