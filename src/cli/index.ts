@@ -64,9 +64,9 @@ program.command("random")
 program.command("static <md5> <ext>")
     .description("获取静态资源")
     .option("-o, --output <output>", "输出路径")
-    .action(async (options) => {
+    .action(async (md5, ext, options) => {
         try {
-            const data = await client.static(options.md5, options.ext);
+            const data = await client.static(md5, ext);
             if (options.output) {
                 fs.writeFileSync(options.output, Buffer.from(data));
             } else {
