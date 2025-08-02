@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { useApi, query } from "./parser";
+import { useApi, query, toSearchTag } from "./parser";
 import { Post } from "./structs";
 import { assignRecursive } from "./utils";
 import { SearchConfig } from "./structs/config";
@@ -29,6 +29,10 @@ export class E621 {
     }
     public async fetchPost(id: ValidIdField) {
         const response = await request(useApi(`posts/${id}`), "get", this);
+        return response.data.post;
+    }
+    public async randomPost(...tags: string[]) {
+        const response = await request(useApi("posts/random") + query({ tags: toSearchTag(...tags) }), "get", this);
         return response.data.post;
     }
 }
