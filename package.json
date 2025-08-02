@@ -1,7 +1,7 @@
 {
     "name": "e621-sdk",
     "version": "1.0.0",
-    "description": "",
+    "description": "从E621抓取帖子。支持搜索、引用、随机。",
     "scripts": {
         "dev": "tsc --watch",
         "build": "tsc",
@@ -9,9 +9,21 @@
     },
     "types": "src/index.ts",
     "main": "dist/index.js",
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "e621",
+        "sdk",
+        "typescript",
+        "fetch",
+        "axios",
+        "api",
+        "post",
+        "get",
+        "download",
+        "search",
+        "posts"
+    ],
+    "author": "FallingShrimp",
+    "license": "MIT",
     "devDependencies": {
         "@types/node": "^24.1.0",
         "eslint": "^9.32.0",
@@ -19,5 +31,9 @@
     },
     "dependencies": {
         "axios": "^1.11.0"
-    }
+    },
+    "files": [
+        "dist",
+        "test.js"
+    ]
 }
