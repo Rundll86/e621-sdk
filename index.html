@@ -23,11 +23,13 @@
     <script>
         function createImg(data) {
             const img = document.createElement("img");
+            console.log(data);
             img.src = data.file.url;
             return img;
         }
         function setImg(...datas) {
             const imgs = document.getElementById("imgs");
+            imgs.innerHTML = "";
             datas.forEach(data => imgs.appendChild(createImg(data)));
         }
         const searchBtn = document.getElementById('search-btn');
@@ -43,14 +45,14 @@
         fetchBtn.addEventListener('click', async () => {
             const postId = document.getElementById('post-id').value;
             const response = await fetch(`/api/post/${postId}`);
-            const data = await response.text();
+            const data = await response.json();
             setImg(data);
         });
         const randomBtn = document.getElementById('random-btn');
         randomBtn.addEventListener('click', async () => {
             const tags = document.getElementById('random-tags').value;
             const response = await fetch(`/api/random?tags=${tags}`);
-            const data = await response.text();
+            const data = await response.json();
             setImg(data);
         });
     </script>
