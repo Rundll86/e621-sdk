@@ -1,12 +1,14 @@
 import express, { Request, Response } from "express";
 import { E621, RateLimiter } from "../client";
 import path from "path";
+import { toSearchTag } from "../parser";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 const client = new E621({
-    rateLimiter: new RateLimiter()
+    rateLimiter: new RateLimiter(),
+    log: true
 });
 
 client.configureAxios({
@@ -19,7 +21,7 @@ app.get("/api/search", async (req: Request, res: Response) => {
     try {
         const { tags, limit, page } = req.query;
         const posts = await client.searchPost({
-            tags: tags as string,
+            tags: toSearchTag(tags as string),
             limit: limit ? parseInt(limit as string) : undefined,
             page: page ? parseInt(page as string) : undefined
         });
@@ -28,7 +30,6 @@ app.get("/api/search", async (req: Request, res: Response) => {
         res.status(500).json({ error: (err as Error).message });
     }
 });
-
 app.get("/api/post/:id", async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -38,7 +39,6 @@ app.get("/api/post/:id", async (req: Request, res: Response) => {
         res.status(500).json({ error: (err as Error).message });
     }
 });
-
 app.get("/api/random", async (req: Request, res: Response) => {
     try {
         const { tags } = req.query;
@@ -48,7 +48,6 @@ app.get("/api/random", async (req: Request, res: Response) => {
         res.status(500).json({ error: (err as Error).message });
     }
 });
-
 app.get("/api/static/:md5/:ext", async (req: Request, res: Response) => {
     try {
         const { md5, ext } = req.params;
@@ -59,10 +58,12 @@ app.get("/api/static/:md5/:ext", async (req: Request, res: Response) => {
         res.status(500).json({ error: (err as Error).message });
     }
 });
-
 app.get("/", (_, res) => {
     res.sendFile(path.resolve("index.html"));
 });
+app.get("/favicon.ico", (_, res) => {
+    res.sendFile(path.resolve("favicon.ico"));
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
