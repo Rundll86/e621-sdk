@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E621墙内镜像</title>
+    <style>
+        img {
+            max-width: 80vw;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,8 +28,8 @@
     <div id="imgs"></div>
     <script>
         function createImg(data) {
-            const img = document.createElement("img");
             console.log(data);
+            const img = document.createElement("img");
             img.src = `/api/static/${data.file.md5}/${data.file.ext}`;
             return img;
         }
