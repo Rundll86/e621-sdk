@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E621墙内镜像</title>
+</head>
+
+<body>
+    按关键词搜索：
+    <input type="text" id="tags" placeholder="关键词">
+    <input type="number" id="limit" placeholder="每页多少个帖子">
+    <input type="number" id="page" placeholder="页码">
+    <button id="search-btn">搜索</button><br>
+    指定一个帖子id：
+    <input type="text" id="post-id" placeholder="ID">
+    <button id="fetch-btn">搜索</button><br>
+    随机获取帖子
+    <input type="text" id="random-tags" placeholder="关键词">
+    <button id="random-btn">搜索</button>
+    <div id="imgs"></div>
+    <script>
+        function createImg(data) {
+            const img = document.createElement("img");
+            img.src = data.file.url;
+            return img;
+        }
+        function setImg(...datas) {
+            const imgs = document.getElementById("imgs");
+            datas.forEach(data => imgs.appendChild(createImg(data)));
+        }
+        const searchBtn = document.getElementById('search-btn');
+        searchBtn.addEventListener('click', async () => {
+            const tags = document.getElementById('tags').value;
+            const limit = document.getElementById('limit').value;
+            const page = document.getElementById('page').value;
+            const response = await fetch(`/api/search?tags=${tags}&limit=${limit}&page=${page}`);
+            const data = await response.json();
+            setImg(...data);
+        });
+        const fetchBtn = document.getElementById('fetch-btn');
+        fetchBtn.addEventListener('click', async () => {
+            const postId = document.getElementById('post-id').value;
+            const response = await fetch(`/api/post/${postId}`);
+            const data = await response.text();
+            setImg(data);
+        });
+        const randomBtn = document.getElementById('random-btn');
+        randomBtn.addEventListener('click', async () => {
+            const tags = document.getElementById('random-tags').value;
+            const response = await fetch(`/api/random?tags=${tags}`);
+            const data = await response.text();
+            setImg(data);
+        });
+    </script>
+</body>
+
+</html>

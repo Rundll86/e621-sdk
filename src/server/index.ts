@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { E621, RateLimiter } from "../client";
+import path from "path";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -46,6 +47,10 @@ app.get("/api/random", async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).json({ error: (err as Error).message });
     }
+});
+
+app.get("/", (_, res) => {
+    res.sendFile(path.resolve("index.html"));
 });
 
 app.listen(port, () => {
