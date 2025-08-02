@@ -1,3 +1,10 @@
+export type TagClassify = 'general' | 'species' | 'character' | 'artist' | 'invalid' | 'lore' | 'meta';
+export enum RateLevel {
+    SAFE = "s",
+    QUESTIONABLE = "q",
+    EXPLICIT = "e",
+}
+export type SearchTag = Record<TagClassify, string[]>
 export interface Post {
     id: string;
     created_at: Date;
@@ -9,11 +16,11 @@ export interface Post {
         down: number;
         total: number;
     };
-    tags: Record<'general' | 'species' | 'character' | 'artist' | 'invalid' | 'lore' | 'meta', string[]>;
+    tags: SearchTag;
     locked_tags: string[];
     change_seq: string;
     flags: StateFlag[];
-    rating: "s" | "q" | "e";
+    rating: RateLevel;
     fav_count: number;
     sources: string[];
     pools: string[];
