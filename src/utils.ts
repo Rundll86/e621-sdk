@@ -21,6 +21,13 @@ export function createForm(data: Record<string, any>) {
     Object.keys(data).forEach(key => result.append(key, data[key]));
     return result;
 }
+export function count(c: number) {
+    return {
+        per(t: number) {
+            return t / c;
+        }
+    }
+}
 export type BanKey<T, U extends string | symbol | number> = {
     [K in keyof T as K extends keyof U ? never : K]: T[K];
 }

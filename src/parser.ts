@@ -7,7 +7,7 @@ export function useApi(url: string) {
 export function toSearchTag(...names: string[] | SearchTag[]): string {
     return names
         .flatMap(name => typeof name === "string" ? [name] : Object.values(name).flat())
-        .map(name => encodeURIComponent(name.replaceAll(" ", "_")))
+        .map(name => encodeURIComponent(name.toLowerCase().replaceAll(" ", "_")))
         .join("+");
 }
 export function query(data: Record<string, any>) {
