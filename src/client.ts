@@ -27,7 +27,10 @@ export class E621Authenticator {
 export class E621 extends E621Authenticator {
     rateLimiter: RateLimiter | null = null;
     log: boolean = false;
-
+    constructor(config: { rateLimiter?: RateLimiter, log?: boolean }) {
+        super();
+        Object.assign(this, config);
+    }
     public async searchPost(config: Partial<SearchConfig> = {}): Promise<Post[]> {
         const response = await request(useApi("posts") + query(config), "get", this);
         return response.data.posts;
