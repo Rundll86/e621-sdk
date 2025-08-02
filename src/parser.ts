@@ -10,6 +10,9 @@ export function toSearchTag(...names: string[] | SearchTag[]): string {
         .map(name => encodeURIComponent(name.toLowerCase().replaceAll(" ", "_")))
         .join("+");
 }
+export function fromSearchTag(tag: string | SearchTag) {
+    return (typeof tag === "string" ? tag : toSearchTag(tag)).split("+").map(name => decodeURIComponent(name).replaceAll("_", " "));
+}
 export function query(data: Record<string, any>) {
-    return `?${Object.keys(data).map(key => `${key}=${data[key]}`).join("&")}`
+    return `?${Object.keys(data).map(key => data[key] === undefined ? undefined : `${key}=${data[key]}`).filter(x => x !== undefined).join("&")}`;
 }

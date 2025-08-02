@@ -1,9 +1,16 @@
+import { green, yellow, red } from "chalk";
 export type TagClassify = 'general' | 'species' | 'character' | 'artist' | 'invalid' | 'lore' | 'meta';
 export enum RateLevel {
     SAFE = "s",
     QUESTIONABLE = "q",
     EXPLICIT = "e",
 }
+export const rateColorMap = {
+    s: green,
+    q: yellow,
+    e: red
+}
+export const rateNameMap = Object.fromEntries(Object.keys(RateLevel).map((key) => [RateLevel[key as keyof typeof RateLevel], key]));
 export type SearchTag = Record<TagClassify, string[]>
 export interface Post {
     id: string;

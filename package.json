@@ -31,10 +31,16 @@
     },
     "dependencies": {
         "axios": "^1.11.0",
+        "chalk": "4",
+        "chalk-template": "^1.1.0",
         "commander": "^14.0.0"
     },
     "files": [
         "dist",
         "test.js"
-    ]
+    ],
+    "bin": {
+        "e621": "./dist/cli/index.js",
+        "e621-sdk": "./dist/cli/index.js"
+    }
 }
