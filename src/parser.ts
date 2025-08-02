@@ -13,6 +13,6 @@ export function toSearchTag(...names: string[] | SearchTag[]): string {
 export function fromSearchTag(tag: string | SearchTag) {
     return (typeof tag === "string" ? tag : toSearchTag(tag)).split("+").map(name => decodeURIComponent(name).replaceAll("_", " "));
 }
-export function query(data: Record<string, any>) {
+export function query(data: Record<string, string | number | undefined>) {
     return `?${Object.keys(data).map(key => data[key] === undefined ? undefined : `${key}=${data[key]}`).filter(x => x !== undefined).join("&")}`;
 }

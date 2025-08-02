@@ -1,11 +1,11 @@
-export function assignRecursive<T extends Record<string, any>>(target: T, ...sources: Partial<T>[]): T {
+export function assignRecursive<T extends object>(target: T, ...sources: Partial<T>[]): T {
     const result = Object(target);
     for (const nextSource of sources) {
         if (nextSource != null) {
             for (const nextKey in nextSource) {
                 if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
                     const nextVal = nextSource[nextKey];
-                    if (typeof nextVal === 'object' && nextVal !== null && !Array.isArray(nextVal)) {
+                    if (typeof nextVal === "object" && nextVal !== null && !Array.isArray(nextVal)) {
                         result[nextKey] = assignRecursive(Object.prototype.hasOwnProperty.call(result, nextKey) ? result[nextKey] : {}, nextVal);
                     } else {
                         result[nextKey] = nextVal;
@@ -16,9 +16,9 @@ export function assignRecursive<T extends Record<string, any>>(target: T, ...sou
     }
     return result;
 }
-export function createForm(data: Record<string, any>) {
+export function createForm(data: Record<string, string | number | undefined>) {
     const result = new FormData();
-    Object.keys(data).forEach(key => result.append(key, data[key]));
+    Object.keys(data).forEach(key => result.append(key, String(data[key])));
     return result;
 }
 export function count(c: number) {

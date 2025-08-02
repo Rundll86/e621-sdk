@@ -25,7 +25,7 @@ program.command("search")
     .action(async (options) => {
         try {
             const posts = await client.searchPost({
-                tags: toSearchTag(...options.tags?.split(",")),
+                tags: toSearchTag(...options.tags?.split(",") ?? []),
                 limit: options.limit,
                 page: options.page,
             });

@@ -1,5 +1,5 @@
 import { green, yellow, red } from "chalk";
-export type TagClassify = 'general' | 'species' | 'character' | 'artist' | 'invalid' | 'lore' | 'meta';
+export type TagClassify = "general" | "species" | "character" | "artist" | "invalid" | "lore" | "meta";
 export enum RateLevel {
     SAFE = "s",
     QUESTIONABLE = "q",
