@@ -6,6 +6,7 @@
         "dev": "tsc --watch",
         "build": "tsc",
         "start": "node test.js",
+        "start:server": "node dist/src/server/index.js",
         "lint": "eslint . --fix"
     },
     "types": "src/index.ts",
