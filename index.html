@@ -24,7 +24,7 @@
         function createImg(data) {
             const img = document.createElement("img");
             console.log(data);
-            img.src = data.file.url;
+            img.src = `/api/static/${data.file.md5}/${data.file.ext}`;
             return img;
         }
         function setImg(...datas) {

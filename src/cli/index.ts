@@ -3,6 +3,7 @@ import { program } from "commander";
 import packages from "../../package.json";
 import { E621 } from "../client";
 import { toSearchTag } from "../parser";
+import fs from "fs";
 
 const client = new E621();
 client.configureAxios({
@@ -55,6 +56,22 @@ program.command("random")
         try {
             const post = await client.randomPost(...options.tags?.split(",") ?? [])
             console.log(post.formatted);
+        } catch (err) {
+            console.error("Failed to connect E621:", (err as Error).message);
+        }
+    });
+
+program.command("static <md5> <ext>")
+    .description("获取静态资源")
+    .option("-o, --output <output>", "输出路径")
+    .action(async (options) => {
+        try {
+            const data = await client.static(options.md5, options.ext);
+            if (options.output) {
+                fs.writeFileSync(options.output, Buffer.from(data));
+            } else {
+                console.log(data);
+            }
         } catch (err) {
             console.error("Failed to connect E621:", (err as Error).message);
         }

@@ -44,6 +44,12 @@ export class E621 extends E621Authenticator {
         const response = await request(useApi("posts/random") + query({ tags: toSearchTag(...tags.filter(Boolean)) }), "get", this);
         return new PostWrapper(response.data.post, this);
     }
+    async static(md5: string, ext: string): Promise<ArrayBuffer> {
+        this.axiosConfig.responseType = "arraybuffer";
+        const response = await request(`https://static1.e621.net/data/${md5.slice(0, 2)}/${md5.slice(2, 4)}/${md5}.${ext}`, "get", this);
+        delete this.axiosConfig.responseType;
+        return response.data;
+    }
 }
 /**
  * @description 限制请求速率

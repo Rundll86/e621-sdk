@@ -49,6 +49,17 @@ app.get("/api/random", async (req: Request, res: Response) => {
     }
 });
 
+app.get("/api/static/:md5/:ext", async (req: Request, res: Response) => {
+    try {
+        const { md5, ext } = req.params;
+        const data = await client.static(md5, ext);
+        res.setHeader("Content-Type", `image/${ext}`);
+        res.send(data);
+    } catch (err) {
+        res.status(500).json({ error: (err as Error).message });
+    }
+});
+
 app.get("/", (_, res) => {
     res.sendFile(path.resolve("index.html"));
 });
