@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { useApi, query, toSearchTag } from "./parser";
+import { useApi, query, toSearchTag, baseUrl } from "./parser";
 import { Post, rateColorMap, rateNameMap } from "./structs";
 import { assignRecursive, count } from "./utils";
 import { SearchConfig } from "./structs/config";
@@ -49,6 +49,23 @@ export class E621 extends E621Authenticator {
         const response = await request(`https://static1.e621.net/data/${md5.slice(0, 2)}/${md5.slice(2, 4)}/${md5}.${ext}`, "get", this);
         delete this.axiosConfig.responseType;
         return response.data;
+    }
+    async serverStatus(): Promise<{
+        status: boolean;
+        message: unknown | null;
+    }> {
+        try {
+            await request(baseUrl, "get", this);
+            return {
+                status: true,
+                message: null,
+            };
+        } catch (e) {
+            return {
+                status: false,
+                message: e,
+            };
+        }
     }
 }
 /**

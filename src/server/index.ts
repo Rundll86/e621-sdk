@@ -58,6 +58,15 @@ app.get("/api/static/:md5/:ext", async (req: Request, res: Response) => {
         res.status(500).json({ error: (err as Error).message });
     }
 });
+app.get("/api/status", async (_, res) => {
+    try {
+        const { status, message } = await client.serverStatus();
+        res.json({ status, message });
+    } catch (err) {
+        res.status(500).json({ error: (err as Error).message });
+    }
+});
+
 app.get("/", (_, res) => {
     res.sendFile(path.resolve("index.html"));
 });

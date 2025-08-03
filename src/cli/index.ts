@@ -4,6 +4,7 @@ import packages from "../../package.json";
 import { E621 } from "../client";
 import { toSearchTag } from "../parser";
 import fs from "fs";
+import chalkTemplate from "chalk-template";
 
 const client = new E621();
 client.configureAxios({
@@ -16,7 +17,6 @@ program
     .name(packages.name)
     .description(packages.description)
     .version(packages.version);
-
 
 program.command("search")
     .description("搜索帖子")
@@ -37,7 +37,6 @@ program.command("search")
             console.error("Failed to connect E621:", (err as Error).message);
         }
     });
-
 program.command("fetch <id>")
     .description("获取指定帖子")
     .action(async (id) => {
@@ -48,7 +47,6 @@ program.command("fetch <id>")
             console.error("Failed to connect E621:", (err as Error).message);
         }
     });
-
 program.command("random")
     .description("随机获取帖子")
     .option("-t, --tags <tags>", "标签")
@@ -60,7 +58,6 @@ program.command("random")
             console.error("Failed to connect E621:", (err as Error).message);
         }
     });
-
 program.command("static <md5> <ext>")
     .description("获取静态资源")
     .option("-o, --output <output>", "输出路径")
@@ -74,6 +71,15 @@ program.command("static <md5> <ext>")
             }
         } catch (err) {
             console.error("Failed to connect E621:", (err as Error).message);
+        }
+    });
+program.command("status")
+    .description("获取服务器状态")
+    .action(async () => {
+        const { status, message } = await client.serverStatus();
+        console.log(chalkTemplate`E621服务器状态：{bold.${status ? "green" : "red"} ${status ? "在线" : "离线"}}`);
+        if (message) {
+            console.log(chalkTemplate`{bold.yellow ${message}}`);
         }
     });
 
