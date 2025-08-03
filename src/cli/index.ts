@@ -5,6 +5,7 @@ import { E621 } from "../client";
 import { formatArrayBuffer, toSearchTag, truncate } from "../parser";
 import fs from "fs";
 import chalkTemplate from "chalk-template";
+import { progressBar } from "../utils";
 
 const client = new E621();
 client.configureAxios({
@@ -73,9 +74,12 @@ program.command("static <md5> <ext>")
     .requiredOption("-o, --output <output>", "输出路径")
     .action(async (md5, ext, options) => {
         try {
-            const data = await client.static(md5, ext);
+            const data = await client.static(md5, ext, e => {
+                process.stdout.write(progressBar(e.percent) + "\r");
+            });
+            console.log("");
             fs.writeFileSync(options.output, Buffer.from(data));
-            console.log(chalkTemplate`${formatArrayBuffer(data, `${truncate(md5, 4)}${ext}`)} > {italic ${options.output}}`);
+            console.log(chalkTemplate`${formatArrayBuffer(data, `${truncate(md5, 4)}${ext}`)} : {italic ${options.output}}`);
         } catch (err) {
             console.error("Failed to connect E621:", (err as Error).message);
         }

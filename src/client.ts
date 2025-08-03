@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosProgressEvent, AxiosRequestConfig } from "axios";
 import { useApi, query, toSearchTag, baseUrl } from "./parser";
 import { Post, rateColorMap, rateNameMap } from "./structs";
 import { assignRecursive, count } from "./utils";
@@ -66,8 +66,17 @@ export class E621 extends E621Authenticator {
         if (this.useImage) return new PostWrapper(response.data, this);
         else return new PostWrapper(response.data.post, this);
     }
-    async static(md5: string, ext: string): Promise<ArrayBuffer> {
+    async static(md5: string, ext: string, progressCallback?: (event: { loaded: number; total: number; percent: number }) => void): Promise<ArrayBuffer> {
         this.axiosConfig.responseType = "arraybuffer";
+        if (progressCallback) {
+            this.axiosConfig.onDownloadProgress = e => {
+                progressCallback({
+                    loaded: e.loaded,
+                    total: e.total ?? 0,
+                    percent: e.loaded / (e.total ?? 0),
+                });
+            };
+        }
         const response = await request(
             this.useImage
                 ? new URL(`/api/static/${md5}/${ext}`, this.imageUrls[this.useImage]).toString()
@@ -75,6 +84,9 @@ export class E621 extends E621Authenticator {
             "get",
             this
         );
+        if (progressCallback) {
+            delete this.axiosConfig.onDownloadProgress;
+        }
         delete this.axiosConfig.responseType;
         return response.data;
     }

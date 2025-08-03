@@ -1,3 +1,5 @@
+import chalkTemplate from "chalk-template";
+
 export function assignRecursive<T extends object>(target: T, ...sources: Partial<T>[]): T {
     const result = Object(target);
     for (const nextSource of sources) {
@@ -27,6 +29,10 @@ export function count(c: number) {
             return t / c;
         }
     }
+}
+export function progressBar(percent: number, length: number = 10) {
+    const filled = Math.floor(percent * length);
+    return chalkTemplate`<{bold ${"#".repeat(filled)}}${".".repeat(length - filled)} {bold.yellow ${(percent * 100).toFixed(2)}%}>`;
 }
 export type BanKey<T, U extends string | symbol | number> = {
     [K in keyof T as K extends keyof U ? never : K]: T[K];
