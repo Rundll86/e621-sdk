@@ -2,7 +2,7 @@
 import { program } from "commander";
 import packages from "../../package.json";
 import { E621 } from "../client";
-import { toSearchTag } from "../parser";
+import { formatArrayBuffer, toSearchTag, truncate } from "../parser";
 import fs from "fs";
 import chalkTemplate from "chalk-template";
 
@@ -75,6 +75,7 @@ program.command("static <md5> <ext>")
         try {
             const data = await client.static(md5, ext);
             fs.writeFileSync(options.output, Buffer.from(data));
+            console.log(chalkTemplate`${formatArrayBuffer(data, `${truncate(md5, 4)}${ext}`)} > {italic ${options.output}}`);
         } catch (err) {
             console.error("Failed to connect E621:", (err as Error).message);
         }

@@ -1,3 +1,4 @@
+import chalkTemplate from "chalk-template";
 import { E621 } from "./client";
 import { SearchTag } from "./structs";
 import { URL } from "url";
@@ -25,4 +26,13 @@ export function fromSearchTag(tag: string | SearchTag) {
 }
 export function query(data: Record<string, string | number | undefined>) {
     return `?${Object.keys(data).map(key => data[key] === undefined ? undefined : `${key}=${data[key]}`).filter(x => x !== undefined).join("&")}`;
+}
+export function truncate(str: string, maxLength: number): string {
+    if (str.length <= maxLength) {
+        return str;
+    }
+    return str.slice(0, maxLength) + "...";
+}
+export function formatArrayBuffer(ab: ArrayBuffer, fn: string): string {
+    return chalkTemplate`[{bold ${fn}}] {cyan ${(ab.byteLength / 1024).toFixed(1)}kb}`;
 }
