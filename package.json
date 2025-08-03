@@ -1,6 +1,6 @@
 {
     "name": "e621-sdk",
-    "version": "1.0.5",
+    "version": "1.0.7",
     "description": "从E621抓取帖子。支持搜索、引用、随机。",
     "scripts": {
         "dev": "tsc --watch",
@@ -9,7 +9,7 @@
         "start:server": "node dist/src/server/index.js",
         "lint": "eslint . --fix"
     },
-    "types": "src/index.ts",
+    "types": "dist/src/index.d.ts",
     "main": "dist/src/index.js",
     "keywords": [
         "e621",
