@@ -70,15 +70,11 @@ program.command("random")
     });
 program.command("static <md5> <ext>")
     .description("获取静态资源")
-    .option("-o, --output <output>", "输出路径")
+    .requiredOption("-o, --output <output>", "输出路径")
     .action(async (md5, ext, options) => {
         try {
             const data = await client.static(md5, ext);
-            if (options.output) {
-                fs.writeFileSync(options.output, Buffer.from(data));
-            } else {
-                console.log(data);
-            }
+            fs.writeFileSync(options.output, Buffer.from(data));
         } catch (err) {
             console.error("Failed to connect E621:", (err as Error).message);
         }
