@@ -41,7 +41,8 @@ export class E621 extends E621Authenticator {
         return new PostWrapper(response.data.post, this);
     }
     async randomPost(...tags: string[]): Promise<PostWrapper> {
-        const response = await request(useApi("posts/random") + query({ tags: toSearchTag(...tags.filter(Boolean)) }), "get", this);
+        const tag = tags[Math.floor(Math.random() * tags.length)];
+        const response = await request(useApi("posts/random") + query({ tags: toSearchTag(tag) }), "get", this);
         return new PostWrapper(response.data.post, this);
     }
     async static(md5: string, ext: string): Promise<ArrayBuffer> {
