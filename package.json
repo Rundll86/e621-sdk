@@ -1,6 +1,6 @@
 {
     "name": "e621-sdk",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "从E621抓取帖子。支持搜索、引用、随机。",
     "scripts": {
         "dev": "tsc --watch",
