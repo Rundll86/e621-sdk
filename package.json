@@ -28,6 +28,7 @@
     "license": "MIT",
     "devDependencies": {
         "@eslint/js": "^9.32.0",
+        "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
         "@types/node": "^24.1.0",
         "eslint": "^9.32.0",
@@ -44,6 +45,7 @@
         "chalk": "4",
         "chalk-template": "^1.1.0",
         "commander": "^14.0.0",
+        "cors": "^2.8.5",
         "express": "^5.1.0"
     },
     "files": [

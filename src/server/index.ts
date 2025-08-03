@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { E621, RateLimiter } from "../client";
 import path from "path";
+import cors from "cors";
 import { toSearchTag } from "../parser";
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 const client = new E621({
     rateLimiter: new RateLimiter(),
     log: true
@@ -16,6 +16,8 @@ client.configureAxios({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"
     }
 });
+
+app.use(cors());
 
 app.get("/api/search", async (req: Request, res: Response) => {
     try {
