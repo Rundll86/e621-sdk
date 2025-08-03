@@ -1,8 +1,18 @@
+import { E621 } from "./client";
 import { SearchTag } from "./structs";
-
+import { URL } from "url";
 export const baseUrl = "https://e621.net";
-export function useApi(url: string) {
-    return `${baseUrl}/${url}.json`;
+
+export function useApi(url: string, client: E621) {
+    if (client.useImage) {
+        if (url === "posts") {
+            return new URL("/api/search", client.imageUrls[client.useImage]).toString();
+        } else if (url === "posts/random") {
+            return new URL("/api/random", client.imageUrls[client.useImage]).toString();
+        } else {
+            return new URL(`/api/${url.replaceAll("posts", "post")}`, client.imageUrls[client.useImage]).toString();
+        }
+    } else return `${baseUrl}/${url}.json`;
 }
 export function toSearchTag(...names: string[] | SearchTag[]): string {
     return names

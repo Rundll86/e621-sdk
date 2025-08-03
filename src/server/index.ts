@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { E621, RateLimiter } from "../client";
+import { E621 } from "../client";
 import path from "path";
 import cors from "cors";
 import { toSearchTag } from "../parser";

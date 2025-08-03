@@ -13,20 +13,30 @@ client.configureAxios({
     }
 });
 
+program.hook("preAction", () => {
+    const opts = program.opts();
+    client.log = opts.debug;
+    if (opts.image) {
+        client.addImage("cli", opts.image, true);
+    }
+});
+
+program
+    .option("-d, --debug", "是否开启调试模式")
+    .option("-i, --image <image>", "镜像URL");
 program
     .name(packages.name)
     .description(packages.description)
     .version(packages.version);
 
-program.command("search")
+program.command("search <tags>")
     .description("搜索帖子")
-    .option("-t, --tags <tags>", "标签")
     .option("-l, --limit <limit>", "限制")
     .option("-p, --page <page>", "页码")
-    .action(async (options) => {
+    .action(async (tags, options) => {
         try {
             const posts = await client.searchPost({
-                tags: toSearchTag(...options.tags?.split(",") ?? []),
+                tags: toSearchTag(...tags?.split(",") ?? []),
                 limit: options.limit,
                 page: options.page,
             });

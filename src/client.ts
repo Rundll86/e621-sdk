@@ -7,13 +7,18 @@ import { AccountInfo } from "./structs/auth";
 import { request } from "./request";
 import { ValidIdField } from "./structs/value";
 import chalkTemplate from "chalk-template";
+import { URL } from "url";
 
 export class E621Authenticator {
+    //镜像Url
+    imageUrls: Record<string, string> = {};
+    useImage: false | string = false;
+    //Axios
     axiosConfig: AxiosRequestConfig = {};
     configureAxios(config: Partial<AxiosRequestConfig>) {
         this.axiosConfig = assignRecursive(this.axiosConfig, config);
     }
-
+    //鉴权
     accountInfo: AccountInfo | null = null;
     get isAuthorized() {
         return this.accountInfo != null;
@@ -24,6 +29,19 @@ export class E621Authenticator {
     async login(username: string, apikey: string) {
         this.accountInfo = { username, apikey };
     }
+    //镜像增删改查
+    delImage(name: string) {
+        delete this.imageUrls[name];
+    }
+    addImage(name: string, url: string, autoUse: boolean = false) {
+        this.imageUrls[name] = url;
+        if (autoUse) {
+            this.use(name);
+        }
+    }
+    use(name: string | false) {
+        this.useImage = name;
+    }
 }
 export class E621 extends E621Authenticator {
     rateLimiter: RateLimiter | null = null;
@@ -33,21 +51,30 @@ export class E621 extends E621Authenticator {
         Object.assign(this, config ?? {});
     }
     async searchPost(config: Partial<SearchConfig> = {}): Promise<PostWrapper[]> {
-        const response = await request(useApi("posts") + query(config), "get", this);
-        return response.data.posts.map((post: Post) => new PostWrapper(post, this));
+        const response = await request(useApi("posts", this) + query(config), "get", this);
+        if (this.useImage) return response.data.map((post: Post) => new PostWrapper(post, this));
+        else return response.data.posts.map((post: Post) => new PostWrapper(post, this));
     }
     async fetchPost(id: ValidIdField): Promise<PostWrapper> {
-        const response = await request(useApi(`posts/${id}`), "get", this);
-        return new PostWrapper(response.data.post, this);
+        const response = await request(useApi(`posts/${id}`, this), "get", this);
+        if (this.useImage) return new PostWrapper(response.data, this);
+        else return new PostWrapper(response.data.post, this);
     }
     async randomPost(...tags: string[]): Promise<PostWrapper> {
         const tag = tags[Math.floor(Math.random() * tags.length)];
-        const response = await request(useApi("posts/random") + query({ tags: toSearchTag(tag) }), "get", this);
-        return new PostWrapper(response.data.post, this);
+        const response = await request(useApi("posts/random", this) + query({ tags: toSearchTag(tag) }), "get", this);
+        if (this.useImage) return new PostWrapper(response.data, this);
+        else return new PostWrapper(response.data.post, this);
     }
     async static(md5: string, ext: string): Promise<ArrayBuffer> {
         this.axiosConfig.responseType = "arraybuffer";
-        const response = await request(`https://static1.e621.net/data/${md5.slice(0, 2)}/${md5.slice(2, 4)}/${md5}.${ext}`, "get", this);
+        const response = await request(
+            this.useImage
+                ? new URL(`/api/static/${md5}/${ext}`, this.imageUrls[this.useImage]).toString()
+                : `https://static1.e621.net/data/${md5.slice(0, 2)}/${md5.slice(2, 4)}/${md5}.${ext}`,
+            "get",
+            this
+        );
         delete this.axiosConfig.responseType;
         return response.data;
     }
@@ -56,7 +83,7 @@ export class E621 extends E621Authenticator {
         message: unknown | null;
     }> {
         try {
-            await request(baseUrl, "get", this);
+            await request(this.useImage ? this.imageUrls[this.useImage] : baseUrl, "get", this);
             return {
                 status: true,
                 message: null,
