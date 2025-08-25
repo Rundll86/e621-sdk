@@ -41,7 +41,7 @@
     <script src="e621-sdk.js"></script>
     <script>
         const client = new e621.E621();
-        client.addImage("offical", window.location.origin, true);
+        client.addImage("offical", "https://ei.fshrimp.fun", true);
         async function refresh() {
             const post = await client.randomPost(["Von lycaon", "Death (puss in boots)"]);
             let { ext, md5 } = post.data.file;
