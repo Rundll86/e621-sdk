@@ -22,18 +22,29 @@
             height: 100vh;
             object-fit: cover;
         }
+
+        #ref {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
     <img id="image">
     <video id="video"></video>
+    <div id="ref"></div>
     <script src="e621-sdk.js"></script>
     <script>
         const client = new e621.E621();
         client.addImage("offical", window.location.origin, true);
-        client.randomPost(["Von lycaon", "Death (puss in boots)"]).then(async e => {
-            let { ext, md5 } = e.data.file;
+        async function refresh() {
+            const post = await client.randomPost(["Von lycaon", "Death (puss in boots)"]);
+            let { ext, md5 } = post.data.file;
             const data = await client.static(md5, ext);
             const url = URL.createObjectURL(new Blob([data]));
             if (ext === "webm") {
@@ -41,7 +52,9 @@
             } else {
                 document.getElementById("image").src = url;
             }
-        });
+        }
+        refresh();
+        document.getElementById("ref").addEventListener("click", refresh);
     </script>
 </body>
 

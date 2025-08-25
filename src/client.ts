@@ -62,7 +62,7 @@ export class E621 extends E621Authenticator {
     }
     async randomPost(...tags: string[]): Promise<PostWrapper> {
         const tag = tags[Math.floor(Math.random() * tags.length)];
-        const response = await request(useApi("posts/random", this) + query({ tags: toSearchTag(tag) }), "get", this);
+        const response = await request(useApi("posts/random", this) + query({ tags: toSearchTag(tag), flag: Math.random() }), "get", this);
         if (this.useImage) return new PostWrapper(response.data, this);
         else return new PostWrapper(response.data.post, this);
     }
