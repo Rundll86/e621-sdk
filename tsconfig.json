@@ -6,9 +6,10 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "outDir": "./dist",
+        "outDir": "dist/sdk",
         "resolveJsonModule": true,
-        "declaration": true
+        "declaration": true,
+        "baseUrl": "."
     },
     "include": [
         "src/**/*"

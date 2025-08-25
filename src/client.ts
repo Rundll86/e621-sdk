@@ -1,4 +1,4 @@
-import { AxiosProgressEvent, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { useApi, query, toSearchTag, baseUrl } from "./parser";
 import { Post, rateColorMap, rateNameMap } from "./structs";
 import { assignRecursive, count } from "./utils";

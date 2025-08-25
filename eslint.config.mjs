@@ -18,5 +18,14 @@ export default defineConfig([
             quotes: ["error", "double"],
             indent: ["error", 4]
         }
+    },
+    {
+        files: ["webpack.config.js"],
+        languageOptions: {
+            globals: globals.node
+        },
+        rules: {
+            "@typescript-eslint/no-require-imports": "off"
+        }
     }
 ]);
