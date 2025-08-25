@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random e621 wallpaper</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
+        }
+
+        img,
+        video {
+            position: absolute;
+            left: 0;
+            top: 0;
+            max-width: 100vw;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="image">
+    <video id="video"></video>
+    <script src="e621-sdk.js"></script>
+    <script>
+        const client = new e621.E621();
+        client.addImage("offical", "http://localhost:3000", true);
+        client.randomPost(["Von lycaon", "Death (puss in boots)"]).then(e => {
+            let { url, ext } = e.data.file;
+            if (ext === "webm") {
+                document.getElementById("video").src = url;
+            } else {
+                document.getElementById("image").src = url;
+            }
+        });
+    </script>
+</body>
+
+</html>

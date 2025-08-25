@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { E621 } from "../client";
 import path from "path";
 import cors from "cors";
-import { toSearchTag } from "../parser";
+import { fromSearchTag, toSearchTag } from "../parser";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -42,8 +42,8 @@ app.get("/api/post/:id", async (req: Request, res: Response) => {
 });
 app.get("/api/random", async (req: Request, res: Response) => {
     try {
-        const { tags } = req.query;
-        const post = await client.randomPost(tags as string);
+        const tags = req.query.tags as string;
+        const post = await client.randomPost(...tags.split(" "));
         res.json(post.data);
     } catch (err) {
         res.status(500).json({ error: (err as Error).message });

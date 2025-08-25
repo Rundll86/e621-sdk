@@ -22,10 +22,10 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: [".ts", ".js"],
-        fallback: {
-            url: false
-        }
+        extensions: [".ts", ".js"]
+    },
+    externals: {
+        url: "{URL}"
     },
     plugins: [
         new LimitChunkCountPlugin({ maxChunks: 1 }),
@@ -33,5 +33,13 @@ module.exports = {
             name: "e621-sdk",
             color: "green"
         })
-    ]
+    ],
+    devServer: {
+        port: 25565,
+        static: "public",
+        setupExitSignals: false,
+        client: {
+            logging: "none"
+        }
+    }
 };

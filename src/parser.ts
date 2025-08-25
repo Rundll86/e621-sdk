@@ -17,7 +17,7 @@ export function useApi(url: string, client: E621) {
 }
 export function toSearchTag(...names: string[] | SearchTag[]): string {
     return names
-        .flatMap(name => typeof name === "string" ? [name] : Object.values(name).flat())
+        .flatMap(name => typeof name === "string" ? [name] : Object.values(name ?? {}).flat())
         .map(name => encodeURIComponent(name.toLowerCase().replaceAll(" ", "_")))
         .join("+");
 }

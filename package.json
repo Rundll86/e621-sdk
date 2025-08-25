@@ -3,15 +3,17 @@
     "version": "1.3.1",
     "description": "从E621抓取帖子。支持搜索、引用、随机。",
     "scripts": {
-        "dev": "tsc --watch",
+        "dev": "run-p dev:*",
+        "dev:sdk": "tsc --watch",
+        "dev:lib": "webpack serve --mode development",
         "build": "run-p build:*",
         "build:sdk": "tsc",
         "build:lib": "webpack --mode production",
-        "start": "node dist/src/server/index.js",
+        "start": "node dist/sdk/src/server/index.js",
         "lint": "eslint . --fix"
     },
-    "types": "dist/src/index.d.ts",
-    "main": "dist/src/index.js",
+    "types": "dist/sdk/src/index.d.ts",
+    "main": "dist/sdk/src/index.js",
     "keywords": [
         "e621",
         "sdk",
@@ -56,7 +58,7 @@
         "test.js"
     ],
     "bin": {
-        "e621": "./dist/src/cli/index.js",
-        "e621-sdk": "./dist/src/cli/index.js"
+        "e621": "./dist/sdk/src/cli/index.js",
+        "e621-sdk": "./dist/sdk/src/cli/index.js"
     }
 }
