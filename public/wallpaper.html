@@ -29,13 +29,15 @@
     <script src="e621-sdk.js"></script>
     <script>
         const client = new e621.E621();
-        client.addImage("offical", "http://localhost:3000", true);
-        client.randomPost(["Von lycaon", "Death (puss in boots)"]).then(e => {
-            let { url, ext } = e.data.file;
+        client.addImage("offical", window.location.origin, true);
+        client.randomPost(["Von lycaon", "Death (puss in boots)"]).then(async e => {
+            let { ext, md5 } = e.data.file;
+            const data = await client.static(md5, ext);
+            const url = URL.createObjectURL(data);
             if (ext === "webm") {
-                document.getElementById("video").src = url;
+                document.getElementById("video").src = data;
             } else {
-                document.getElementById("image").src = url;
+                document.getElementById("image").src = data;
             }
         });
     </script>

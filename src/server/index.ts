@@ -6,9 +6,7 @@ import { toSearchTag } from "../parser";
 
 const app = express();
 const port = process.env.PORT || 3000;
-const client = new E621({
-    log: true
-});
+const client = new E621();
 
 client.configureAxios({
     headers: {
@@ -17,6 +15,8 @@ client.configureAxios({
 });
 
 app.use(cors());
+app.use(express.static("public"));
+app.use(express.static("dist/lib"));
 
 app.get("/api/search", async (req: Request, res: Response) => {
     try {
@@ -54,7 +54,7 @@ app.get("/api/static/:md5/:ext", async (req: Request, res: Response) => {
         const { md5, ext } = req.params;
         const data = await client.static(md5, ext);
         res.setHeader("Content-Type", `image/${ext}`);
-        res.send(data);
+        res.status(200).send(data);
     } catch (err) {
         res.status(500).json({ error: (err as Error).message });
     }
@@ -68,16 +68,8 @@ app.get("/api/status", async (_, res) => {
     }
 });
 
-app.get("/", (_, res) => {
-    res.sendFile(path.resolve("public/index.html"));
-});
-app.get("/wallpaper", (_, res) => {
-    res.sendFile(path.resolve("public/wallpaper.html"));
-});
 app.get("/favicon.ico", (_, res) => {
     res.sendFile(path.resolve("public/favicon.ico"));
 })
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => console.log(`${port}`));
