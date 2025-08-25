@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { E621 } from "../client";
 import path from "path";
 import cors from "cors";
-import { fromSearchTag, toSearchTag } from "../parser";
+import { toSearchTag } from "../parser";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -69,10 +69,13 @@ app.get("/api/status", async (_, res) => {
 });
 
 app.get("/", (_, res) => {
-    res.sendFile(path.resolve("index.html"));
+    res.sendFile(path.resolve("public/index.html"));
+});
+app.get("/wallpaper", (_, res) => {
+    res.sendFile(path.resolve("public/wallpaper.html"));
 });
 app.get("/favicon.ico", (_, res) => {
-    res.sendFile(path.resolve("favicon.ico"));
+    res.sendFile(path.resolve("public/favicon.ico"));
 })
 
 app.listen(port, () => {
