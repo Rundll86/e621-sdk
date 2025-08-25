@@ -1,3 +1,4 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 const { optimize: { LimitChunkCountPlugin } } = require("webpack");
@@ -32,6 +33,14 @@ module.exports = {
         new Webpackbar({
             name: "e621-sdk",
             color: "green"
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: "public",
+                    to: "."
+                }
+            ]
         })
     ],
     devServer: {
