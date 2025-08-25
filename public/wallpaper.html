@@ -33,7 +33,7 @@
         client.randomPost(["Von lycaon", "Death (puss in boots)"]).then(async e => {
             let { ext, md5 } = e.data.file;
             const data = await client.static(md5, ext);
-            const url = URL.createObjectURL(data);
+            const url = URL.createObjectURL(new Blob([data]));
             if (ext === "webm") {
                 document.getElementById("video").src = data;
             } else {
